@@ -1,52 +1,65 @@
- var hour900 = 9;
- var hour1000 = 10;
- var hour1100 = 11;
- var hour1200 = 12;
- var hour1300 = 13;
- var hour1400 = 14;
- var hour1500 = 15;
- var hour1600 = 16;
- var hour1700 = 17;
- 
- var currentHour = moment().format('H');
+// I need to collection of buss hours 9-5
 
-//Calculate the number of hours from now and a  given hour (in 24 hours format) of the day
-// If result is <0 means the given time is in the future
-// If result is >0 means the given time is in the past
+var bizHours  = [];
+var isEditing = false;
 
-function hoursFromNow(time) {
-    //Create an instance of moment for the current time
-    var now=moment();
-    //Create an instance of moment for the given time
-    var todayTime=moment(now.format("MM/DD/YYYY")+" "+time+":00");
-    //Return the difference in hours between the two moments
-    return now.diff(todayTime,"hours");
-  }
+// populating the array
 
-  /* 
-  GIVEN I am using a daily planner to create a schedule
-WHEN I open the planner
-THEN the current day is displayed at the top of the calendar // moment JS current date 
-WHEN I scroll down
-THEN I am presented with timeblocks for standard business hours // rows for each hour
-WHEN I view the timeblocks for that day // timeBlockRow Class
-THEN each timeblock is color coded to indicate whether it is in the past, present, or future // what??
-WHEN I click into a timeblock
-THEN I can enter an event // form? 
-WHEN I click the save button for that timeblock //click event listener
-THEN the text for that event is saved in local storage // save info/local storage????
-WHEN I refresh the page // refresh page to make sure info is saved
-THEN the saved events persist
-```
+function setupScheduler(){
+    for (let index = 0, MAX_HOURS = 9; index < 9; index++) {
+        bizHours[index] = index + MAX_HOURS; 
+        $('#scheduler').append(`
+            <tr class="row" onclick="scheduleAnEvent(event,'id-for-${bizHours[index]}');">
+                <td class="hour"> ${bizHours[index]}</td>
+                <td class='event ${applyColor(bizHours[index])}'> 
+                    <span id='id-for-${bizHours[index]}'>EVENT</span>
+                </td>
+                <td class="action"><button onclick="saveEvent('id-for-${bizHours[index]}')">Save</button></td>
+            </tr>`);
+    }
+}
+// Apply colors to scheduler
+// We need to pass an hour to this function
+// a based on the time ( hour ) pass, we will apply the
+// correct color.
+function applyColor(toEventColumnForHour){
+    const currentTime = 15;
+    if ( currentTime < toEventColumnForHour) {
+        return 'past';
+    } else if (currentTime > toEventColumnForHour){
+        return 'future';
+    }
+    return  'present';
+}
 
-The following animation demonstrates the application functionality:
 
-![A user clicks on slots on the color-coded calendar and edits the events.](./Assets/05-third-party-apis-homework-demo.gif)
-  */
+// Create event for user
+function scheduleAnEvent(event, timePicked){
+    if ( isEditing === false) {
+        isEditing = true;
+        $(`#${timePicked}`).append('<input type="text" class="inputEvent"/>');
+    }
+}
 
- var displayTime = document.querySelector("#currentDay");
+// Save a new event
+function saveEvent(timePicked) {
+    const newEvent = $('input').val();
+    saveDataOnLocalStorage({ time: 15, event: newEvent});
+    $('tr input').remove();
+    $(`#${timePicked}`).text(newEvent);
+    isEditing = false;
+}
 
- var currentTime = moment();
+function main(){
+    setupScheduler();
+
+}
+
+function saveDataOnLocalStorage(data) {
+    localStorage.setItem(data.time, data.event);
+}
+
+main();
  
  displayTime.textContent = currentTime.format("dddd, MMMM Do")
  

@@ -95,4 +95,22 @@ textarea {
 .time-block-row td[data-selecting] {background-color: red; }
 
 .time-block-row td[data-disabled] {opacity:0.55; }
-  
+
+table {
+  width:100%;
+}
+
+.event{
+  width: 90%
+}
+.hour{
+  width: 5%;
+}
+.action{
+  width: 5%;
+}
+
+.inputEvent {
+  width: 80%;
+  margin: auto;
+}
