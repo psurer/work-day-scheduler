@@ -18,4 +18,4 @@ Simple calendar application that allows a user to save events for each hour of t
 ### https://github.com/psurer/work-day-scheduler
 ### https://psurer.github.io/work-day-scheduler/
 
-![screen shot](./assets/images/screenshot.png)
+![screen shot](./Assets/images/screenshot.png)
