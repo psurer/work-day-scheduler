@@ -2,7 +2,7 @@
 
 var bussHours  = [];
 var isEditing = false;
-const timeFormat = "DD:MM:YYYY";
+const timeFormat = "DD:MMMM:YYYY";
 var currentTime = moment().format(timeFormat);
 var schedulerData = [];  // data to be saved in localstorage
 
